@@ -24,11 +24,12 @@ export const styles = StyleSheet.create({
     alignItems: "center",
   },
   headerLogo: {
-    width: 75,
-    height: 75,
+    width: 30,
+    height: 30,
   },
   welcomeContainer: {
     flex: 1,
+    marginLeft: 12
   },
   welcomeText: {
     fontSize: 14,
@@ -52,8 +53,8 @@ export const styles = StyleSheet.create({
   },
   addButton: {
     backgroundColor: COLORS.primary,
-    paddingHorizontal: 16,
-    paddingVertical: 10,
+    paddingHorizontal: 8,
+    paddingVertical: 5,
     borderRadius: 24,
     flexDirection: "row",
     alignItems: "center",
@@ -125,10 +126,11 @@ export const styles = StyleSheet.create({
     fontWeight: "600",
   },
   sectionTitle: {
-    fontSize: 18,
+    fontSize: 24,
     fontWeight: "600",
     color: COLORS.text,
     marginBottom: 15,
+    marginTop: 20,
   },
   transactionCard: {
     backgroundColor: COLORS.card,
