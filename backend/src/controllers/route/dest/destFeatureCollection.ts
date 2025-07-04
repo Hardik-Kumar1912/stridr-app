@@ -1,11 +1,14 @@
-// src/app/api/route/destFeatureCollection.js
-export async function getDestFeatureCollection(pois) {
+import { FeatureCollectionArea } from '../../../types/types';
+export async function getDestFeatureCollection(pois: [number, number][]): Promise<{ type: string; features: FeatureCollectionArea[] }> {
   if (!pois || !Array.isArray(pois) || pois.length === 0) {
     console.error("No points of interest provided:", pois);
-    return {};
+    return {
+      type: "FeatureCollection",
+      features: [],
+    };
   }
   // console.log("Points of interest:", pois);
-  const features = [];
+  const features: FeatureCollectionArea[] = [];
   pois.forEach((poi, index) => {
     if (!Array.isArray(poi) || poi.length !== 2) {
       throw new Error("Invalid POI coordinates");

@@ -1,10 +1,11 @@
 import { poiSyntax } from "../../utils/poiSyntax.js";
+import { OverpassElement, Priority } from "../../types/types.js";
 
 export async function fetchDestPOIs(
-  [lon, lat],
-  [lonDest, latDest],
-  priorities
-) {
+  [lon, lat]: [number, number],
+  [lonDest, latDest]: [number, number],
+  priorities: Priority[]
+): Promise<[number, number][]> {
   if (!priorities || !Array.isArray(priorities) || priorities.length === 0) {
     return [];
   }
@@ -87,10 +88,10 @@ export async function fetchDestPOIs(
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
   });
 
-  const data1 = await res1.json();
-  const data2 = await res2.json();
-  let data3 = { elements: [] };
-  if (distance > 2) {
+  const data1: { elements: OverpassElement[] } = await res1.json();
+  const data2: { elements: OverpassElement[] } = await res2.json();
+  let data3: { elements: OverpassElement[] } = { elements: [] };
+  if (distance > 2 && res3) {
     data3 = await res3.json();
   }
   // console.log(`Fetched ${data.elements.length} POIs`);
@@ -117,7 +118,7 @@ export async function fetchDestPOIs(
         }
         return null;
       })
-      .filter((coord) => coord !== null),
+      .filter((coord): coord is [number, number] => Array.isArray(coord) && coord.length === 2),
     ...data2.elements
       .map((el) => {
         if (el.lat != null && el.lon != null) {
@@ -127,7 +128,7 @@ export async function fetchDestPOIs(
         }
         return null;
       })
-      .filter((coord) => coord !== null),
+      .filter((coord): coord is [number, number] => Array.isArray(coord) && coord.length === 2),
     ...data3.elements
       .map((el) => {
         if (el.lat != null && el.lon != null) {
@@ -137,6 +138,6 @@ export async function fetchDestPOIs(
         }
         return null;
       })
-      .filter((coord) => coord !== null),
+      .filter((coord): coord is [number, number] => Array.isArray(coord) && coord.length === 2),
   ];
 }

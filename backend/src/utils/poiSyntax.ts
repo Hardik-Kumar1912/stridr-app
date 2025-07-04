@@ -1,4 +1,14 @@
-export function poiSyntax({ radius = 1000, longitude, latitude }) {
+import { Priority } from "../types/types";
+
+export function poiSyntax({
+  radius = 1000,
+  longitude,
+  latitude,
+}: {
+  radius?: number;
+  longitude: number;
+  latitude: number;
+}): Record<Priority, string> {
   return {
     parks: `
             node["leisure"~"^(park|playground|pitch|track|fitness_station|nature_reserve)$"](around:${radius},${latitude},${longitude});

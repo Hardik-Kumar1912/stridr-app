@@ -1,16 +1,26 @@
 import { poiSyntax } from "../../utils/poiSyntax.js";
 
+import { Priority } from "../../types/types.js";
+import { OverpassElement } from "../../types/types.js";
 
-export async function fetchPOIs([lon, lat], radius, priorities) {
+export async function fetchPOIs(
+  [lon, lat]: [number, number],
+  radius: number,
+  priorities: Priority[]
+): Promise<[number, number][]> {
   // console.log(`Fetching POIs around ${lat}, ${lon} with radius ${radius}`);
   if (!priorities || !Array.isArray(priorities) || priorities.length === 0) {
     return [];
   }
   if (!lat || !lon || typeof lat !== "number" || typeof lon !== "number") {
-    throw new Error("Invalid coordinates provided. Latitude and longitude must be numbers.");
+    throw new Error(
+      "Invalid coordinates provided. Latitude and longitude must be numbers."
+    );
   }
   if (typeof radius !== "number" || radius <= 0) {
-    throw new Error("Invalid radius provided. Radius must be a positive number.");
+    throw new Error(
+      "Invalid radius provided. Radius must be a positive number."
+    );
   }
 
   const poiTypes = poiSyntax({ radius, longitude: lon, latitude: lat });
@@ -19,10 +29,11 @@ export async function fetchPOIs([lon, lat], radius, priorities) {
   const query = `
   [out:json][timeout:25];
   (
-    ${priorities.map((priority) => {
-    return poiTypes[priority];
-  }).join('\n')
-    }
+    ${priorities
+      .map((priority) => {
+        return poiTypes[priority];
+      })
+      .join("\n")}
   );
   out center;
 `;
@@ -33,8 +44,8 @@ export async function fetchPOIs([lon, lat], radius, priorities) {
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
   });
 
-  const data = await res.json();
-  if(process.env.NEXT_PUBLIC_DEBUGGING === "ON") {
+  const data: { elements: OverpassElement[] } = await res.json();
+  if (process.env.NEXT_PUBLIC_DEBUGGING === "ON") {
     console.log(`Fetched ${data.elements.length} POIs`);
     console.log("----- POI Data -----");
     console.log(data);
@@ -49,5 +60,5 @@ export async function fetchPOIs([lon, lat], radius, priorities) {
       }
       return null;
     })
-    .filter((coord) => coord !== null);
+    .filter((coord): coord is [number, number] => Array.isArray(coord) && coord.length === 2);
 }

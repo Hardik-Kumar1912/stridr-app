@@ -1,5 +1,3 @@
-import { toast } from "sonner";
-
 const getCurrentLocation = () => {
   return new Promise((resolve, reject) => {
     if ("geolocation" in navigator) {
@@ -26,15 +24,11 @@ const getCurrentLocation = () => {
         },
         (error) => {
           console.error("Error getting location:", error);
-          toast.error(
-            "Could not fetch location. Please allow location access."
-          );
           reject(error);
         },
         { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
       );
     } else {
-      toast.info("Geolocation is not supported by your browser.");
       reject(new Error("Geolocation not supported"));
     }
   });

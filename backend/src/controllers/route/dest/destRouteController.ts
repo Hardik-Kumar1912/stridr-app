@@ -1,23 +1,20 @@
 import { fetchDestPOIs } from "../../pois/fech-dest-pois.js";
 import { getDestFeatureCollection } from "./destFeatureCollection.js";
-
+import { Request, Response } from "express";
 import { getDestRoute } from "./getDestRoute.js";
 
-export async function destRouteController(req, res , next) {
+export async function destRouteController(req: Request, res: Response) {
   console.log("Received request to modify route");
   const { user_location_cords, dest_location_cords, priorities } =
-    await req.json();
+    req.body;
 
   console.log("User location coordinates:", user_location_cords);
   console.log("Destination location coordinates:", dest_location_cords);
   if (!user_location_cords || !dest_location_cords) {
-    res.json(
-      {
-        error:
-          "Invalid request: user_location_cords and dest_location_cords are required",
-      },
-      { status: 400 }
-    );
+    res.status(400).json({
+      error:
+        "Invalid request: user_location_cords and dest_location_cords are required",
+    });
     return;
   }
   const pois = await fetchDestPOIs(

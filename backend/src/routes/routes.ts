@@ -1,4 +1,4 @@
-import * as express from "express";
+import express from "express";
 import userRouter from "./user.routes.js";
 import geocodingRouter from "./geocoding.routes.js";
 import generationRouter from "./generation.routes.js";

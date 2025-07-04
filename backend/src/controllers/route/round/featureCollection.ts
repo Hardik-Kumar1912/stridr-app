@@ -1,15 +1,15 @@
-// src/app/api/route/featureCollection.js
-export async function getFeatureCollection(pois) {
+import { FeatureCollectionArea } from '../../../types/types';
+export async function getFeatureCollection(pois: [number, number][]): Promise<{ type: string; features: FeatureCollectionArea[] }> {
   if (!pois || !Array.isArray(pois) || pois.length === 0) {
     console.error("No points of interest provided:", pois);
-    return {};
+    return { type: "FeatureCollection", features: [] };
   }
   if (process.env.NEXT_PUBLIC_DEBUGGING === "ON") {
     console.log("Generating feature collection for this many POIs:", pois.length);
   }
 
   // console.log("Points of interest:", pois);
-  const features = [];
+  const features: FeatureCollectionArea[] = [];
   pois.forEach((poi, index) => {
     if (!Array.isArray(poi) || poi.length !== 2) {
       throw new Error("Invalid POI coordinates");
@@ -29,7 +29,7 @@ export async function getFeatureCollection(pois) {
             [poi[0] - 0.0004, poi[1] - 0.0004],
           ],
         ],
-      },
+      }
     });
   });
   const featureCollection = {

@@ -1,23 +1,23 @@
+import { FeatureCollectionArea } from "../../../types/types";
+
 export async function getDestRoute(
-  user_location_cords, // [lon, lat]
-  dest_location_cords,
-  poiCount,
-  featureCollection,
+  user_location_cords: [number, number], // [lon, lat]
+  dest_location_cords: [number, number],
+  poiCount: number,
+  featureCollection: {
+    type: string;
+    features: FeatureCollectionArea[];
+  }
 ) {
   const GRAPHHOPPER_HOST_URL =
     process.env.GRAPHHOPPER_HOST_URL || "http://localhost:8989";
   const url = `${GRAPHHOPPER_HOST_URL}/route`;
 
   const customModel = {
-    priority: Array.from(
-      { length: poiCount },
-      (_, i) => (
-        {
-          if: `in_primary_poi_${i}`,
-          multiply_by: "50",
-        }
-      ),
-    ),
+    priority: Array.from({ length: poiCount }, (_, i) => ({
+      if: `in_primary_poi_${i}`,
+      multiply_by: "50",
+    })),
     areas: featureCollection,
     distance_influence: 100,
   };
