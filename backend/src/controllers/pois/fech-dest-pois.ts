@@ -118,7 +118,10 @@ export async function fetchDestPOIs(
         }
         return null;
       })
-      .filter((coord): coord is [number, number] => Array.isArray(coord) && coord.length === 2),
+      .filter(
+        (coord): coord is [number, number] =>
+          Array.isArray(coord) && coord.length === 2
+      ),
     ...data2.elements
       .map((el) => {
         if (el.lat != null && el.lon != null) {
@@ -128,7 +131,10 @@ export async function fetchDestPOIs(
         }
         return null;
       })
-      .filter((coord): coord is [number, number] => Array.isArray(coord) && coord.length === 2),
+      .filter(
+        (coord): coord is [number, number] =>
+          Array.isArray(coord) && coord.length === 2
+      ),
     ...data3.elements
       .map((el) => {
         if (el.lat != null && el.lon != null) {
@@ -138,6 +144,9 @@ export async function fetchDestPOIs(
         }
         return null;
       })
-      .filter((coord): coord is [number, number] => Array.isArray(coord) && coord.length === 2),
+      .filter(
+        (coord): coord is [number, number] =>
+          Array.isArray(coord) && coord.length === 2
+      ),
   ];
 }

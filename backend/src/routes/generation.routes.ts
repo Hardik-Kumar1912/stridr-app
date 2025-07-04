@@ -1,6 +1,6 @@
 import * as express from "express";
-import { roundRouteController } from "../controllers/route/round/roundRouteController";
-import { destRouteController } from "../controllers/route/dest/destRouteController";
+import { roundRouteController } from "../controllers/route/round/roundRouteController.js";
+import { destRouteController } from "../controllers/route/dest/destRouteController.js";
 
 const router = express.Router();
 

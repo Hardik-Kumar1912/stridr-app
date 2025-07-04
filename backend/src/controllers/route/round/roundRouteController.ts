@@ -2,9 +2,12 @@ import { Request, Response } from "express";
 import { fetchPOIs } from "../../pois/fetch-pois.js";
 import { getFeatureCollection } from "./featureCollection.js";
 import { getRoute } from "./getRoute.js";
-import { FeatureCollectionArea } from "../../../types/types.js";
+// import { FeatureCollectionArea } from "../../../types/types.js";
 
-export async function roundRouteController(req: Request, res: Response): Promise<void> {
+export async function roundRouteController(
+  req: Request,
+  res: Response
+): Promise<void> {
   const { user_location_cords, route_distance, priorities } = req.body;
   if (!user_location_cords || !route_distance) {
     res.status(400).json({

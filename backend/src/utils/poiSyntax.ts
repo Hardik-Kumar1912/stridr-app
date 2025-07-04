@@ -1,4 +1,4 @@
-import { Priority } from "../types/types";
+import { Priority } from "../types/types.js";
 
 export function poiSyntax({
   radius = 1000,

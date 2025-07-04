@@ -1,28 +1,31 @@
 import express from "express";
 import baseRouter from "./routes/routes.js";
-import { clerkMiddleware, requireAuth } from "@clerk/express";
+// import { clerkMiddleware, requireAuth } from "@clerk/express";
 import dotenv from "dotenv";
-import sample1 from "../src/utils/sample_route1.json";
-import sample2 from "../src/utils/sample_route2.json";
+import { sampleRoute1, sampleRoute2 } from "./utils/sample_route.js";
 dotenv.config();
 
 const app = express();
 app.use(express.json());
-app.use(clerkMiddleware());
+// app.use(clerkMiddleware());
 
 app.get("/health", (req, res) => {
   res.status(200).send("OK");
 });
 
 app.get("/sample1", (req, res) => {
-  res.status(200).json(sample1);
+  res.status(200).json(sampleRoute1);
 });
 
 app.get("/sample2", (req, res) => {
-  res.status(200).json(sample2);
+  res.status(200).json(sampleRoute2);
 });
 
-app.use("/api", requireAuth(), baseRouter);
+app.use(
+  "/api",
+  // requireAuth(),
+  baseRouter
+);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

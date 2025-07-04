@@ -60,5 +60,8 @@ export async function fetchPOIs(
       }
       return null;
     })
-    .filter((coord): coord is [number, number] => Array.isArray(coord) && coord.length === 2);
+    .filter(
+      (coord): coord is [number, number] =>
+        Array.isArray(coord) && coord.length === 2
+    );
 }
