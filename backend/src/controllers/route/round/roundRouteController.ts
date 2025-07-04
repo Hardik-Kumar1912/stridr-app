@@ -8,35 +8,52 @@ export async function roundRouteController(
   req: Request,
   res: Response
 ): Promise<void> {
-  const { user_location_cords, route_distance, priorities } = req.body;
-  if (!user_location_cords || !route_distance) {
-    res.status(400).json({
-      error:
-        "Invalid request: user_location_cords and route_distance are required",
-    });
-    return;
-  }
-  if (process.env.NEXT_PUBLIC_DEBUGGING === "ON") {
-    console.log(
-      `Received request with user_location_cords: ${user_location_cords}, route_distance: ${route_distance}, priorities: ${priorities}`
+  try {
+    const { user_location_cords, route_distance, priorities } = JSON.parse(
+      req.body.toString()
     );
-    console.log(
-      `Type of user_location_cords: ${typeof user_location_cords}, Type of route_distance: ${typeof route_distance}`
+    if (!user_location_cords || !route_distance) {
+      // console.log("request body:", req.body);
+      res.status(400).json({
+        error:
+          "Invalid request: user_location_cords and route_distance are required",
+      });
+      return;
+    }
+    if (process.env.NEXT_PUBLIC_DEBUGGING === "ON") {
+      console.log(
+        `Received request with user_location_cords: ${user_location_cords}, route_distance: ${route_distance}, priorities: ${priorities}`
+      );
+      console.log(
+        `Type of user_location_cords: ${typeof user_location_cords}, Type of route_distance: ${typeof route_distance}`
+      );
+      console.log(`Type of priorities: ${typeof priorities}`);
+    }
+    const pois = await fetchPOIs(
+      user_location_cords,
+      route_distance / 2,
+      priorities
     );
-    console.log(`Type of priorities: ${typeof priorities}`);
-  }
-  const pois = await fetchPOIs(
-    user_location_cords,
-    route_distance / 2,
-    priorities
-  );
-  const featureCollection = await getFeatureCollection(pois);
-  const route = await getRoute(
-    user_location_cords,
-    route_distance,
-    pois.length,
-    featureCollection
-  );
+    if (process.env.NEXT_PUBLIC_DEBUGGING === "ON") {
+      console.log(`Fetched ${pois.length} POIs`);
+      console.log("POIs:", pois);
+    }
+    const featureCollection = await getFeatureCollection(pois);
+    if (process.env.NEXT_PUBLIC_DEBUGGING === "ON") {
+      console.log(
+        `Feature collection generated with ${featureCollection.features.length} features`
+      );
+    }
+    const route = await getRoute(
+      user_location_cords,
+      route_distance,
+      pois.length,
+      featureCollection
+    );
 
-  res.json({ route });
+    res.json({ route });
+  } catch (error) {
+    console.error("Error in roundRouteController:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
 }

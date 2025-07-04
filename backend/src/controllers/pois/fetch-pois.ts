@@ -10,6 +10,9 @@ export async function fetchPOIs(
 ): Promise<[number, number][]> {
   // console.log(`Fetching POIs around ${lat}, ${lon} with radius ${radius}`);
   if (!priorities || !Array.isArray(priorities) || priorities.length === 0) {
+    // console.warn(
+    //   "No priorities provided. Returning empty array for POI fetch."
+    // );
     return [];
   }
   if (!lat || !lon || typeof lat !== "number" || typeof lon !== "number") {

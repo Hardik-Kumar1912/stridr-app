@@ -1,7 +1,7 @@
 import { FeatureCollectionArea } from '../../../types/types.js';
 export async function getFeatureCollection(pois: [number, number][]): Promise<{ type: string; features: FeatureCollectionArea[] }> {
   if (!pois || !Array.isArray(pois) || pois.length === 0) {
-    console.error("No points of interest provided:", pois);
+    console.warn("No points of interest provided:", pois);
     return { type: "FeatureCollection", features: [] };
   }
   if (process.env.NEXT_PUBLIC_DEBUGGING === "ON") {

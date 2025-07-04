@@ -8,8 +8,13 @@ dotenv.config();
 
 const app = express();
 app.use(express.json());
+
 app.use((req, res, next) => {
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl}`);
+  // Log the request body if it exists
+  // if (Object.keys(req.body).length > 0) {
+  //   console.log("Request Body:", Buffer.isBuffer(req.body) ? req.body.toString() : req.body);
+  // }
   next();
 });
 app.get("/health", (req, res) => {

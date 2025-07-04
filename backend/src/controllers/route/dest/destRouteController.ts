@@ -5,8 +5,9 @@ import { getDestRoute } from "./getDestRoute.js";
 
 export async function destRouteController(req: Request, res: Response) {
   console.log("Received request to modify route");
-  const { user_location_cords, dest_location_cords, priorities } =
-    req.body;
+  const { user_location_cords, dest_location_cords, priorities } = JSON.parse(
+    req.body.toString()
+  );
 
   console.log("User location coordinates:", user_location_cords);
   console.log("Destination location coordinates:", dest_location_cords);
