@@ -1,10 +1,8 @@
-import { Router } from "express";
-import { updateProfileController } from "../controllers/user/updateProfileController";
+import * as express from "express";
+import {updateProfileController} from "../controllers/user/updateProfileController.js";
 
-const router = Router();
+const router = express.Router();
 
-router.post("/profile", (req, res, next) => {
-  Promise.resolve(updateProfileController(req, res)).catch(next);
-});
+router.post("/profile", updateProfileController);
 
 export default router;

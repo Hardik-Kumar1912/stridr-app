@@ -1,4 +1,4 @@
-import { FeatureCollectionArea } from '../../../types/types';
+import { FeatureCollectionArea } from '../../../types/types.js';
 export async function getDestFeatureCollection(pois: [number, number][]): Promise<{ type: string; features: FeatureCollectionArea[] }> {
   if (!pois || !Array.isArray(pois) || pois.length === 0) {
     console.error("No points of interest provided:", pois);

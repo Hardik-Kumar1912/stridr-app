@@ -10,11 +10,11 @@ const getCurrentLocation = () => {
               `/api/reverseGeocode?lat=${latitude}&lon=${longitude}`
             ).then((res) => res.json());
             if (process.env.NEXT_PUBLIC_DEBUGGING === "ON") {
-              console.log("------From file getUserLocation.js------");
+              console.log("------From file getUserLocation------");
               console.log("Fetched address:", address);
               console.log("Latitude:", latitude);
               console.log("Longitude:", longitude);
-              console.log("------End of file getUserLocation.js------");
+              console.log("------End of file getUserLocation------");
             }
 
             resolve({ latitude, longitude, address });

@@ -1,4 +1,4 @@
-import { FeatureCollectionArea } from "../../../types/types";
+import { FeatureCollectionArea } from "../../../types/types.js";
 interface CustomModelPriority {
   if: string;
   multiply_by: string;

@@ -1,4 +1,4 @@
-import { FeatureCollectionArea } from "../../../types/types";
+import { FeatureCollectionArea } from "../../../types/types.js";
 
 export async function getDestRoute(
   user_location_cords: [number, number], // [lon, lat]

@@ -1,6 +1,6 @@
 import * as express from "express";
-import { forwardGeocodeController } from "../controllers/geocoding/forwardGeocodeController";
-import { reverseGeocodeController } from "../controllers/geocoding/reverseGeocodeController";
+import { forwardGeocodeController } from "../controllers/geocoding/forwardGeocodeController.js";
+import { reverseGeocodeController } from "../controllers/geocoding/reverseGeocodeController.js";
 
 const router = express.Router();
 
