@@ -1,5 +1,14 @@
-import { useState } from "react";
-import { Text, TextInput, TouchableOpacity, View, Image } from "react-native";
+import { useState, useEffect } from "react";
+import {
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+  Image,
+  ActivityIndicator,
+  Animated,
+  Easing,
+} from "react-native";
 import { useSignUp } from "@clerk/clerk-expo";
 import { useRouter } from "expo-router";
 import { styles } from "@/assets/styles/auth.styles.js";
@@ -16,20 +25,33 @@ export default function SignUpScreen() {
   const [pendingVerification, setPendingVerification] = useState(false);
   const [code, setCode] = useState("");
   const [error, setError] = useState("");
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const fadeAnim = useState(new Animated.Value(0))[0];
+
+  useEffect(() => {
+    if (imageLoaded) {
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 500,
+        easing: Easing.out(Easing.ease),
+        useNativeDriver: true,
+      }).start();
+    }
+  }, [imageLoaded]);
 
   const onSignUpPress = async () => {
     if (!isLoaded) return;
 
     if (password.length < 8) {
-    setError("Password must be at least 8 characters long.");
-    return;
+      setError("Password must be at least 8 characters long.");
+      return;
     }
 
     try {
       await signUp.create({ emailAddress, password });
       await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
       setPendingVerification(true);
-      setError(""); // clear previous errors
+      setError("");
     } catch (err) {
       if (err.errors?.[0]?.code === "form_identifier_exists") {
         setError("The email is already in use. Please try another.");
@@ -57,7 +79,7 @@ export default function SignUpScreen() {
     }
   };
 
-  const renderError = () => (
+  const renderError = () =>
     error ? (
       <View style={styles.errorBox}>
         <Ionicons name="alert-circle" size={20} color={COLORS.expense} />
@@ -66,8 +88,7 @@ export default function SignUpScreen() {
           <Ionicons name="close" size={20} color={COLORS.textLight} />
         </TouchableOpacity>
       </View>
-    ) : null
-  );
+    ) : null;
 
   if (pendingVerification) {
     return (
@@ -96,10 +117,25 @@ export default function SignUpScreen() {
       enableAutomaticScroll={true}
     >
       <View style={styles.container}>
-        <Image
-          source={require("../../assets/images/signupIcon.png")}
-          style={styles.illustration}
-        />
+        <View style={{ alignItems: "center", marginBottom: 20, height: 180 }}>
+          {!imageLoaded && (
+            <ActivityIndicator size="small" color={COLORS.primary} style={{ marginTop: 70 }} />
+          )}
+          <Animated.Image
+            source={require("../../assets/images/signupIcon.png")}
+            style={[
+              styles.illustration,
+              {
+                opacity: fadeAnim,
+                position: "absolute",
+                width: 210,
+                height: 210,
+                resizeMode: "contain",
+              },
+            ]}
+            onLoadEnd={() => setImageLoaded(true)}
+          />
+        </View>
 
         <Text style={styles.title}>Create Account</Text>
 

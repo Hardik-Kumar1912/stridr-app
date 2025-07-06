@@ -1,7 +1,16 @@
 import { useSignIn } from "@clerk/clerk-expo";
 import { Link, useRouter } from "expo-router";
-import { Text, TextInput, TouchableOpacity, View, Image } from "react-native";
-import { useState } from "react";
+import {
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+  Image,
+  ActivityIndicator,
+  Animated,
+  Easing,
+} from "react-native";
+import { useEffect, useState } from "react";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Ionicons } from "@expo/vector-icons";
 import { styles } from "@/assets/styles/auth.styles.js";
@@ -14,13 +23,26 @@ export default function SignInScreen() {
   const [emailAddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const fadeAnim = useState(new Animated.Value(0))[0];
+
+  useEffect(() => {
+    if (imageLoaded) {
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 500,
+        easing: Easing.out(Easing.ease),
+        useNativeDriver: true,
+      }).start();
+    }
+  }, [imageLoaded]);
 
   const onSignInPress = async () => {
     if (!isLoaded) return;
 
     if (password.length < 8) {
-    setError("Password must be at least 8 characters long.");
-    return;
+      setError("Password must be at least 8 characters long.");
+      return;
     }
 
     try {
@@ -52,10 +74,26 @@ export default function SignInScreen() {
       enableAutomaticScroll={true}
     >
       <View style={styles.container}>
-        <Image
-          source={require("../../assets/images/loginIcon.png")}
-          style={styles.illustration}
-        />
+        <View style={{ alignItems: "center", marginBottom: 20, height: 180 }}>
+          {!imageLoaded && (
+            <ActivityIndicator size="small" color={COLORS.primary} style={{ marginTop: 70 }} />
+          )}
+          <Animated.Image
+            source={require("../../assets/images/loginIcon.png")}
+            style={[
+              styles.illustration,
+              {
+                opacity: fadeAnim,
+                position: "absolute",
+                width: 210,
+                height: 210,
+                resizeMode: "contain",
+                marrginBottom: 20,
+              },
+            ]}
+            onLoadEnd={() => setImageLoaded(true)}
+          />
+        </View>
 
         <Text style={styles.title}>Welcome Back</Text>
 
