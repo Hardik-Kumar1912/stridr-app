@@ -2,6 +2,9 @@ import * as Location from "expo-location";
 import Toast from "react-native-toast-message";
 import Constants from "expo-constants";
 
+// Access environment variable (make sure you prefix it with EXPO_PUBLIC_ in .env)
+const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
+
 const getCurrentLocation = async () => {
   try {
     // Request location permissions
@@ -22,12 +25,11 @@ const getCurrentLocation = async () => {
 
     const { latitude, longitude } = location.coords;
 
-    // Use environment variable
-    const BACKEND_URL = Constants?.expoConfig?.extra?.BACKEND_URL;
-
+    // Use the .env BACKEND_URL
     const response = await fetch(
-      `http://localhost:3000/api/geocoding/reverse?lat=${latitude}&lon=${longitude}`
+      `${BACKEND_URL}/api/geocoding/reverse?lat=${latitude}&lon=${longitude}`
     );
+
     const { address } = await response.json();
 
     if (__DEV__) {
