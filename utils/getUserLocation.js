@@ -3,7 +3,7 @@ import Toast from "react-native-toast-message";
 import Constants from "expo-constants";
 
 // Access environment variable (make sure you prefix it with EXPO_PUBLIC_ in .env)
-const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
+const BACKEND_URL = Constants.expoConfig?.extra?.EXPO_PUBLIC_BACKEND_URL;
 
 const getCurrentLocation = async () => {
   try {

@@ -17,6 +17,7 @@ import getCurrentLocation from "../../utils/getUserLocation";
 import { useRoute } from "../../context/RouteContext";
 import sampleRoute from "../../utils/sample_route1.json";
 import { Ionicons } from "@expo/vector-icons";
+import Constants from "expo-constants";
 
 const prioritiesList = [
   "parks",
@@ -72,7 +73,7 @@ export default function CreateRoutePage() {
     try {
       const priorities = selectedPriorities;
 
-      const BASE_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
+      const BASE_URL = Constants.expoConfig?.extra?.EXPO_PUBLIC_BACKEND_URL;
 
       if (tripType === "round") {
         const res = await fetch(`${BASE_URL}/api/generation/round-route`, {
